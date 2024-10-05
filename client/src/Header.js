@@ -2,7 +2,7 @@ import { useEffect, useState} from "react";
 import { Link } from "react-router-dom";
 
 export default function Header() {
-    const [username, setUsername] = useState('');
+    const [username, setUsername] = useState(null);
     useEffect(() => {
         fetch('http://localhost:4000/profile', {
             credentials: 'include',
@@ -11,15 +11,24 @@ export default function Header() {
             setUsername(userInfo.username);
         })
     });
-
     }, []);
+
+    function logout() {
+        fetch('http://localhost:4000/logout', {
+            credentials: 'include',
+            method: 'POST',
+        });
+        setUsername(null);
+    }
+
     return(
         <header>
             <Link to="/" className="logo">Blogi</Link>
             <nav>
                 {username && (
                     <> 
-                    <Link to="/create">create new post</Link>
+                    <Link to="/create">Create Post</Link>
+                    <a onClick={logout}>Logout</a>
                     </>
                 )}
                 {!username && (
