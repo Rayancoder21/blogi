@@ -11,14 +11,13 @@ const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
 const Post = require('./models/Post');
 
-
-
 const salt = bcrypt.genSaltSync(10);
 const secret = 'yuyihjh7y3i3ejrw893j#yyyi777iti9t'
 
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(cookieParser());
+app.use('/uploads', express.static(__dirname + '/uploads'));
 
 mongoose.connect('mongodb+srv://blogi:FGX12CPBVEx5nbqN@cluster0.xr0m8.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0');
 
@@ -86,8 +85,6 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
         res.json({postDoc});
         });
     
-
-    
 });
 app.get('/post', async (req, res) => 
 {
@@ -96,8 +93,6 @@ app.get('/post', async (req, res) =>
     .sort({createdAt: -1})
     .limit(10)
 );
-}
-);
-
+});
 
 app.listen(4000);
