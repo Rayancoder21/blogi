@@ -11,6 +11,8 @@ const uploadMiddleware = multer({ dest: 'uploads/' });
 const fs = require('fs');
 const Post = require('./models/Post');
 
+
+
 const salt = bcrypt.genSaltSync(10);
 const secret = 'yuyihjh7y3i3ejrw893j#yyyi777iti9t'
 
@@ -69,14 +71,29 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     const ext = parts[parts.length - 1];
     const newPath = path + '.' + ext;
     fs.renameSync(path, newPath);
+
+    const {token} = req.cookies;
+    jwt.verify(token, secret, {}, async (err, info) => {
+        if (err) throw err;
+        const {title, summary, content} = req.body;
+        const postDoc = await Post.create({
+            title,
+            summary,
+            content,
+            cover: newPath,
+            author:info.id,
+        });
+        res.json({postDoc});
+        });
     
-    const postDoc = await Post.create({
-        title: req.body.title,
-        summary: req.body.summary,
-        content: req.body.content,
-        cover: newPath,
-    });
-    res.json({postDoc});
+
+    
 });
+app.get('/post', async (req, res) => 
+{
+    res.json(await Post.find().populate('author', 'username'));
+}
+);
+
 
 app.listen(4000);
