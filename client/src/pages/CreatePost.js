@@ -14,12 +14,15 @@ export default function CreatePost(){
     const [content, setContent] = useState('');
     const [files, setFiles] = useState('');
     const [redirect, setRedirect] = useState(false);
+
     async function createNewPost(ev) {
         const data = new FormData();
+
         data.set('title', title);
         data.set('summary', summary);
         data.set('content', content);
         data.set('file', files[0]);
+
         ev.preventDefault();
         const response = await fetch('http://localhost:4000/post', {
             method: 'POST',
@@ -47,7 +50,7 @@ export default function CreatePost(){
             <input type="file"  
                 onChange={ev => setFiles(ev.target.files)}/>
             <Editor value={content} onChange={setContent} />
-            <button style={{marginTop:'5px'}}>Push Post</button>
+            <button style={{marginTop:'5px'}}>Release Post</button>
         </form> 
     );
 }
