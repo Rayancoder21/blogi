@@ -3,25 +3,9 @@ import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
 import { useState } from "react";
 import { Navigate } from "react-router-dom";
+import Editor from "../Editor";
 
 
-const modules = {
-    toolbar: [
-        [{ 'header': '1'}, {'header': '2'}, { 'font': [] }],
-        [{size: []}],
-        ['bold', 'italic', 'underline', 'strike', 'blockquote'],
-        [{'list': 'ordered'}, {'list': 'bullet'}, 
-        {'indent': '-1'}, {'indent': '+1'}],
-        ['link', 'image', 'video'],
-        ['clean']
-    ],
-}
-const formats = [
-        'header', 'font', 'size',
-        'bold', 'italic', 'underline', 'strike', 'blockquote',
-        'list', 'bullet', 'indent',
-        'link', 'image', 'video'
-    ];
 
 
 export default function CreatePost(){
@@ -62,11 +46,7 @@ export default function CreatePost(){
                 onChange={ev => setSummary(ev.target.value)}/>
             <input type="file"  
                 onChange={ev => setFiles(ev.target.files)}/>
-            <ReactQuill 
-                value={content} 
-                onChange={newValue => setContent(newValue)} 
-                modules={modules} 
-                formats={formats} />
+            <Editor value={content} onChange={setContent} />
             <button style={{marginTop:'5px'}}>Push Post</button>
         </form> 
     );
