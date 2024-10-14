@@ -2,6 +2,7 @@ import { useEffect, useContext} from "react";
 import { Link } from "react-router-dom";
 import { UserContext } from "./UserContext";
 
+
 export default function Header() {
     const {setUserInfo, userInfo} = useContext(UserContext);
     useEffect(() => {
@@ -12,7 +13,7 @@ export default function Header() {
             setUserInfo(userInfo);
         })
     });
-    }, []);
+    }, [setUserInfo]);
 
     function logout() {
         fetch('http://localhost:4000/logout', {
@@ -31,7 +32,7 @@ export default function Header() {
                 {username && (
                     <> 
                     <Link to="/create">Create new post</Link>
-                    <a onClick={logout}>Logout</a>
+                    <a onClick={logout}>Logout ({username})</a>
                     </>
                 )}
                 {!username && (

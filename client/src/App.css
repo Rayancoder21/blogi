@@ -12,6 +12,9 @@ main{
   max-width: 960px;
   margin: 0 auto;
 }
+a{
+  cursor: pointer;
+}
 header{
   display: flex;
   justify-content: space-between;
