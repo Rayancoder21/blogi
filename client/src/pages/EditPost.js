@@ -14,7 +14,7 @@ export default function EditPost() {
     const [redirect, setRedirect] = useState(false);
 
     useEffect(() => {
-        fetch`http://localhost:4000/post/${id}`.then(response => {
+        fetch ('http://localhost:4000/post/'+id).then(response => {
             response.json().then(postInfo => {
                 setTitle(postInfo.title);
                 setSummary(postInfo.summary);
@@ -22,9 +22,9 @@ export default function EditPost() {
 
             });
         });
-    }, [id]);
+    }, []);
     async function updatePost(ev) {
-        ev.perventDefault();
+        ev.preventDefault();
         const data = new FormData();
         data.set('title', title);
         data.set('summary', summary);

@@ -8,7 +8,7 @@ import { Link } from "react-router-dom";
 
 export default function PostPage() {
     const {id} = useParams();
-    const [postInfo, setPostInfo] = useState({});
+    const [postInfo, setPostInfo] = useState(null);
     const {userInfo} = useContext(UserContext);
     useEffect(() => {
         fetch(`http://localhost:4000/post/${id}`)
@@ -17,7 +17,7 @@ export default function PostPage() {
                     setPostInfo(postInfo);
             });
         });
-    }, [id]);
+    }, []);
 
     if (!postInfo) return '';
 
@@ -37,7 +37,7 @@ export default function PostPage() {
                     </div>
             )}
             <div className="image">          
-                <img src={`http://localhost:4000/${postInfo.cover}`} alt="cover" />
+                <img src={`http://localhost:4000/${postInfo.cover}`} alt="" />
             </div>
             <div className="content" dangerouslySetInnerHTML={{__html:postInfo.content}}/>
         </div>
