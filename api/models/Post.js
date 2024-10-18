@@ -1,14 +1,15 @@
 const mongoose = require('mongoose');
 const {Schema, model} = mongoose;
-// const PostSchema = new mongoose.Schema
-const PostSchema = new Schema({
-    title: String,
-    summary: String,
-    cover: String,
-    content: String,
-    author: {
-        type: Schema.Types.ObjectId,
-        ref: 'User',
+const PostSchema = new mongoose.Schema({
+//const PostSchema = new Schema({
+    title: { type: String, required: true },
+    summary: { type: String, required: true },
+    cover: { type: String, required: true },
+    content: { type: String, required: true },
+    author: { 
+        type: Schema.Types.ObjectId, 
+        ref: 'User', 
+        required: true 
     },
 }, {
     timestamps: true,

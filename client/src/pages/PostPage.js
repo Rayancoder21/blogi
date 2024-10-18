@@ -5,10 +5,9 @@ import { formatISO9075 } from "date-fns";
 import { useContext } from "react";
 import { UserContext } from "../UserContext";
 import { Link } from "react-router-dom";
-
 export default function PostPage() {
     const {id} = useParams();
-    const [postInfo, setPostInfo] = useState(null);
+    const [postInfo, setPostInfo] = useState();
     const {userInfo} = useContext(UserContext);
     useEffect(() => {
         fetch(`http://localhost:4000/post/${id}`)
@@ -17,7 +16,7 @@ export default function PostPage() {
                     setPostInfo(postInfo);
             });
         });
-    }, []);
+    }, [id]);
 
     if (!postInfo) return '';
 
