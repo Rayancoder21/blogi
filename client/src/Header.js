@@ -9,9 +9,11 @@ export default function Header() {
         fetch('http://localhost:4000/profile', {
             credentials: 'include',
         }).then(response => {
+            if (response.ok) {
             response.json().then(userInfo => {
             setUserInfo(userInfo);
         })
+    }
     });
     }, []);
 
@@ -19,8 +21,11 @@ export default function Header() {
         fetch('http://localhost:4000/logout', {
             credentials: 'include',
             method: 'POST',
-        });
+        }).then(() => {
         setUserInfo(null);
+        // Redirect to landing page
+        window.location.href = '/';  // Redirect to landing page
+        });
     }
 
     const username = userInfo?.username;

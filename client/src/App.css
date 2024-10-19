@@ -3,6 +3,8 @@
 }
 body{
   color: #222;
+  margin: 0;
+  padding: 20px;
 }
 img{
   max-width: 100%;
@@ -104,15 +106,17 @@ form.register h1, form.login h1{
   text-align: center;
 }
 
-din.poat-page div.image img{
+div.poat-page div.image img{
   max-height: 200px;
   display: flex;
   overflow: hidden;
+  
 }
 div.post-page div.image img{
   object-fit: cover;
   object-position: center center;
   width: 100%;
+  height: 500px;
 }
 div.post-page a{
   text-decoration: underline;
@@ -153,5 +157,31 @@ div.post-page a.edit-btn{
 }
 a svg {
   height: 20px;
+}
+
+
+.landing-page {
+  text-align: center;
+  padding: 2rem;
+}
+
+.landing-content {
+  margin: 20px;
+}
+
+.gifs {
+  display: flex; /* or block */
+  flex-direction: column;  /* Makes them stack vertically */
+  align-items: center; /* Optional: centers them horizontally */
+  gap: 60px; /* Optional: adds space between GIFs */
+}
+
+.gif-container {
+  width: 100%;
+}
+
+.gif-container img {
+  max-width: 100%;
+  border-radius: 10px;
 }
 

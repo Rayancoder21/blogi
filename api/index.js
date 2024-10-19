@@ -33,7 +33,7 @@ app.post('/register', async (req, res) => {
         res.json(userDoc);
     } catch(e) {
         console.log(e);
-        res.status(400).json(e);
+        res.status(400).json({ error: e.message });
     }
     });
 
@@ -71,10 +71,13 @@ app.get('/profile', (req, res) => {
         res.json(info);
     });
 });
-
 app.post('/logout', (req, res) => {
-    res.cookie('token', '').json('ok');
+    res.cookie('token', '', { expires: new Date(0) }).json('ok');
 });
+
+// app.post('/logout', (req, res) => {
+//     res.cookie('token', '').json('ok');
+// });
 
 // app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
 //     const {originalname, path} = req.file;
