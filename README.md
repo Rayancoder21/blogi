@@ -16,7 +16,7 @@
 
 ## Live Demo
 
-Experience the magic of blogi firsthand! Visit the live demo at [Live Demo URL](your-live-demo-url.com).
+Experience the magic of blogi firsthand! Visit the live demo at [Live Demo URL](https://www.youtube.com/watch?v=NJMwTE2uCuU).
 
 ## Authors
 
