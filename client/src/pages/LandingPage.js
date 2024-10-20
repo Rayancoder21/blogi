@@ -1,7 +1,5 @@
-// src/pages/LandingPage.js
 import React from 'react';
-import Header from '../Header';
-import '../App.css'; // Optional CSS for styling
+import '../App.css';
 
 
 export default function LandingPage() {
@@ -13,7 +11,7 @@ export default function LandingPage() {
                         <img src="/Welcome.gif" alt="welcome" />      
                     </div>
                     <div className="gif-container">
-                        <img src="/RegisterNow.gif" alt="register" />
+                        <img src="/register.gif" alt="register" />
                     </div>
                     <div className="gif-container">
                         <img src="/features.gif" alt="Gif 3" />

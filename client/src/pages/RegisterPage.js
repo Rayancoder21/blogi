@@ -35,7 +35,7 @@ export default function RegisterPage() {
             alert('Registered successfully');
             
         } else {
-            alert('Failed to register');
+            alert('You already have an account, please login');
         }
     }
 

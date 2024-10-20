@@ -56,11 +56,6 @@ app.post('/login', async (req, res) => {
 
 app.get('/profile', (req, res) => {
     const {token} = req.cookies;
-    // jwt.verify(token, secret, {}, (err, info) => {
-    //     if (err) throw err;
-    //     res.json(info);
-    //     });
-    // });
     if (!token) {
         return res.status(401).json({ message: 'Authentication token is required' });
     }
@@ -75,33 +70,6 @@ app.post('/logout', (req, res) => {
     res.cookie('token', '', { expires: new Date(0) }).json('ok');
 });
 
-// app.post('/logout', (req, res) => {
-//     res.cookie('token', '').json('ok');
-// });
-
-// app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
-//     const {originalname, path} = req.file;
-//     const parts = originalname.split('.');
-//     const ext = parts[parts.length - 1];
-//     const newPath = path + '.' + ext;
-//     fs.renameSync(path, newPath);
-
-//     const {token} = req.cookies;
-//     jwt.verify(token, secret, {}, async (err, info) => {
-//         if (err) throw err;
-//         const {title, summary, content} = req.body;
-//         const postDoc = await Post.create({
-//             title,
-//             summary,
-//             content,
-//             cover: newPath,
-//             author: info.id,
-//         });
-//         console.log("Created Post:", postDoc);
-//         res.json({postDoc});
-//         });
-    
-// });
 
 app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
     const { token } = req.cookies; // Get the token from the cookies
@@ -131,48 +99,6 @@ app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
         }
     });
 });
-
-
-// app.post('/post', uploadMiddleware.single('file'), async (req, res) => {
-//     const { token } = req.cookies;
-
-//     jwt.verify(token, secret, {}, async (err, info) => {
-//         if (err) throw err; // If the token is invalid, throw an error
-
-//         // Retrieve the user document using the ID from the verified JWT
-//         const userDoc = await User.findById(info.id); // Use the ID from the JWT
-//         console.log("User Doc:", userDoc); // Verify the user doc
-
-//         // Ensure that you have the user document before proceeding
-//         if (!userDoc) {
-//             return res.status(404).json({ message: 'User not found' });
-//         }
-
-//         const { title, summary, content } = req.body;
-//         try {
-//             const postDoc = await Post.create({
-//                 title,
-//                 summary,
-//                 content,
-//                 cover: req.file ? newPath : null, // Handle if there's no file
-//                 author: info.id,
-//             });
-//             res.json(postDoc);
-//         } catch (error) {
-//             console.error(error); // Log the error
-//             res.status(500).json({ message: 'Error creating post' });
-//         }
-//     //     const postDoc = await Post.create({
-//     //         title,
-//     //         summary,
-//     //         content,
-//     //         cover: newPath, // Make sure you handle newPath properly
-//     //         author: info.id, // Set the post author to the current user's ID
-//     //     });
-
-//     //     res.json({ postDoc });  // Respond with the created post
-//     });
-// });
 
 app.put('/post', uploadMiddleware.single('file'), async (req, res) => {
     let newPath = null;
@@ -222,17 +148,43 @@ app.get('/post', async (req, res) => {
         res.status(500).json({ message: "An error occurred while fetching posts." });
     }
 });
-//     res.json(await Post.find()
-//     .populate('author', ['username'])
-//     .sort({createdAt: -1})
-//     .limit(10)
-// );
-// });
 
 app.get('/post/:id', async (req, res) => {
     const {id} = req.params;
     const postDoc = await Post.findById(id).populate('author', ['username']);
     res.json(postDoc);
+});
+
+app.delete('/post/:id', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        const token = req.cookies.token;
+        if (!token) {
+            return res.status(401).json({ message: 'Authentication token is required' });
+        }
+
+        jwt.verify(token, secret, {}, async (err, info) => {
+            if (err) return res.sendStatus(401); // Unauthorized
+
+            const postDoc = await Post.findById(id);
+            if (!postDoc) {
+                return res.status(404).json({ message: 'Post not found' });
+            }
+
+            // Check if the user is the author
+            if (postDoc.author.toString() !== info.id) {
+                return res.status(403).json({ message: 'Not authorized to delete this post' });
+            }
+
+            // Delete the post
+            await Post.findByIdAndDelete(id);
+            res.status(200).json({ message: 'Post deleted successfully' });
+        });
+    } catch (error) {
+        console.log(error);
+        res.status(500).json({ message: 'An error occurred' });
+    }
 });
 
 app.listen(4000);
